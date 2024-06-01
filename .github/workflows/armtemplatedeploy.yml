@@ -25,4 +25,12 @@ jobs:
             template: ./arm-templates/resourcegroup.json
             deploymentName: githubactionsrg
 
-      
+      - name: Deploy Azure group with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: resourcegroup
+            resourceGroupName: githubactionsrg
+            subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
+            template: ./arm-templates/resourcegroup.json
+            parameters: ./arm-templates/resourcegroup.parameters.json
+            deploymentMode: incremental
