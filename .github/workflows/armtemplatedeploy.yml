@@ -2,15 +2,15 @@ name: armTemplateDeplyment
 on:
   workflow_dispatch:
 
-
 jobs:
   armDeploy:
     runs-on: ubuntu-latest
-
-
     steps:
       - uses: actions/checkout@v4
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-ID: ${{ secrets.TENANT_ID }}
+          
