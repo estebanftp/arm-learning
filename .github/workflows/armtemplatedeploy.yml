@@ -1,6 +1,10 @@
 name: armTemplateDeplyment
+
 on:
-  workflow_dispatch:
+  push:
+    branches:
+     - main
+      workflow_dipatch
 
 jobs:
   armDeploy:
