@@ -23,6 +23,6 @@ jobs:
             subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
             region: eastus
             template: ./arm-templates/resourcegroup.json
-            deplymentName: githubactionsrg
+            deploymentName: githubactionsrg
 
       
