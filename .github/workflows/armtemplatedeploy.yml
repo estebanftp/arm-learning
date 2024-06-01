@@ -12,3 +12,14 @@ jobs:
          uses: azure/login@v2
          with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Deploy Azure group with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: subscription
+            subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
+            region: eastus
+            template: ./arm-templates/resourcegroup.json
+            deplymentName: githubactionsrg
+
+      
