@@ -32,7 +32,7 @@ jobs:
             scope: resourcegroup
             resourceGroupName: githubactionsrg
             subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
-            template: ./arm-templates/storeageaccount.json
+            template: ./arm-templates/storageaccount.json
             parameters: ./arm-templates/storageaccount.parameters.json
             deploymentMode: incremental
       - run: echo ${{ steps.storageaccountdeploy.outputs.BlobUri }}
