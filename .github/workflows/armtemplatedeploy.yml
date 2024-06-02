@@ -25,12 +25,14 @@ jobs:
             template: ./arm-templates/resourcegroup.json
             deploymentName: githubactionsrg
 
-      - name: Deploy Azure group with Github
+      - name: Deploy Storage Account with Github
         uses: Azure/arm-deploy@v2
+        id: storageaccountdeploy
         with:
             scope: resourcegroup
             resourceGroupName: githubactionsrg
             subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
-            template: ./arm-templates/resourcegroup.json
-            parameters: ./arm-templates/resourcegroup.parameters.json
+            template: ./arm-templates/storeageaccount.json
+            parameters: ./arm-templates/storageaccount.parameters.json
             deploymentMode: incremental
+      - run: echo ${{ steps.storageaccountdeploy.outputs.BlobUri }}

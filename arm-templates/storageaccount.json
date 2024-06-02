@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageaccountname": {
+            "type": "string",
+            "metadata": {
+                "description": "Enter Storage Account Name"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Enter location for deployment"
+            }
+        },
+        "sku": {
+            "type": "string",
+            "metadata": {
+                "description": "enter storage account sku"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [{
+        "name": "[parameters('storageaccountname')]",
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+            "displayName": "[parameters('sku')]"
+        },
+        "properties": {
+            "accountType": "Standard_LRS"
+        }
+    }],
+    "outputs": {
+        "bloburi": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname'))).primaryendpoints.blob]"
+        }
+    }
+}
