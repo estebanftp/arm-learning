@@ -22,22 +22,24 @@
         }
     },
     "variables": {},
-    "resources": [{
-        "name": "[parameters('storageaccountname')]",
-        "type": "Microsoft.Storage/storageAccounts",
-        "apiVersion": "2015-06-15",
-        "location": "[parameters('location')]",
-        "tags": {
-            "displayName": "[parameters('sku')]"
-        },
-        "properties": {
-            "accountType": "Standard_LRS"
+    "resources": [
+        {
+            "name": "[parameters('storageaccountname')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2015-06-15",
+            "location": "[parameters('location')]",
+            "tags": {
+                "displayName": "[parameters('sku')]"
+            },
+            "properties": {
+                "accountType": "Standard_LRS"
+            }
         }
-    }],
+    ],
     "outputs": {
         "bloburi": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname'))).primaryendpoints.blob]"
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.blob]"
         }
     }
 }
