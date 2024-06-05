@@ -44,5 +44,5 @@ jobs:
             subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
             template: ./arm-templates/virtualmachine.json
             parameters: 
-              adminPassword-"K33pitS@f3"
+              adminPassword="K33pitS@f3"
             deploymentMode: incremental    
