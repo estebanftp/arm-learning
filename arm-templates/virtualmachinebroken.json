@@ -1,14 +1,21 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
+    "parameters": {
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "enter password"
+            }
+        }
+    },
     "variables": {},
     "resources": [
-       
+        
         {
             "name": "ubuntuVM1-VirtualNetwork",
-              "type": "Microsoft.Network/virtualNetworks",
-              "apiVersion": "2023-11-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "tags": {
                 "displayName": "ubuntuVM1-VirtualNetwork"
@@ -45,8 +52,8 @@
                     {
                         "name": "ipConfig1",
                         "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            
+                            "privateIPAllocationMethod": "Dynamic"
+                            },
                             "subnet": {
                                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'ubuntuVM1-VirtualNetwork', 'ubuntuVM1-VirtualNetwork-Subnet')]"
                             }
@@ -54,14 +61,13 @@
                     }
                 ]
             }
-        },
         {
             "name": "ubuntuVM1",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                
+        
                 "[resourceId('Microsoft.Network/networkInterfaces', 'ubuntuVM1-NetworkInterface')]"
             ],
             "tags": {
@@ -74,7 +80,7 @@
                 "osProfile": {
                     "computerName": "ubuntuVM1",
                     "adminUsername": "adminUsername",
-                    "adminPassword": "SuperS3cretp@ss"
+                    "adminPassword": "[parameters('adminPassword')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -98,7 +104,7 @@
                 }
             }
         }
-
-                ],
+    ]
+ }   
     "outputs": {}
 }
