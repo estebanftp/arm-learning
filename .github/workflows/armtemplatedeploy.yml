@@ -6,15 +6,13 @@ on:
       - main
 env:
   resouce_group_name: githubactionsrg
-  location: eastus
+  location: "eastus"
   subscriptionid: 59e5a011-4299-4deb-869d-e1f45cfd6395
-
 jobs:
   armDeploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v4
-      
       -  name: Azure Login
          uses: azure/login@v2
          with:
