@@ -4,6 +4,10 @@ on:
   push:
     branches: 
       - main
+env:
+  resouce_group_name: githubactionsrg
+  location: eastus
+  subscriptionid: 59e5a011-4299-4deb-869d-e1f45cfd6395
 
 jobs:
   armDeploy:
@@ -20,18 +24,18 @@ jobs:
         uses: Azure/arm-deploy@v2
         with:
             scope: subscription
-            subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
-            region: eastus
+            subscriptionid: ${{ env.subscriptionid }}
+            region: ${{ env.location }}
             template: ./arm-templates/resourcegroup.json
-            deploymentName: githubactionsrg
+            deploymentName: ${{ env.resouce_group_name }}
 
       - name: Deploy Storage Account with Github
         uses: Azure/arm-deploy@v2
         id: storageaccountdeploy
         with:
             scope: resourcegroup
-            resourceGroupName: githubactionsrg
-            subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
             template: ./arm-templates/storageaccount.json
             parameters: ./arm-templates/storageaccount.parameters.json
             deploymentMode: incremental
@@ -40,9 +44,10 @@ jobs:
         uses: Azure/arm-deploy@v2
         with:
             scope: resourcegroup
-            resourceGroupName: githubactionsrg
-            subscriptionID: 59e5a011-4299-4deb-869d-e1f45cfd6395
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
             template: ./arm-templates/virtualmachine.json
             parameters: 
-              adminPassword="K33pitS@f3"
+              adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
+              location=${{ env.location }}"
             deploymentMode: incremental    
