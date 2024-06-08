@@ -1,11 +1,17 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
        "adminPassword": {
         "type": "securestring",
         "metadata": {
             "description": "Enter Password"
+        }
+       },
+       "location": {
+        "type": "string",
+        "metadata": {
+            "description": "Enter the location to the deploy the resource"
         }
        }
     },
@@ -16,7 +22,7 @@
             "name": "ubuntuVM1-VirtualNetwork",
               "type": "Microsoft.Network/virtualNetworks",
               "apiVersion": "2023-11-01",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "tags": {
                 "displayName": "ubuntuVM1-VirtualNetwork"
             },
@@ -40,7 +46,7 @@
             "name": "ubuntuVM1-NetworkInterface",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/virtualNetworks', 'ubuntuVM1-VirtualNetwork')]"
             ],
@@ -66,7 +72,7 @@
             "name": "ubuntuVM1",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 
                 "[resourceId('Microsoft.Network/networkInterfaces', 'ubuntuVM1-NetworkInterface')]"
