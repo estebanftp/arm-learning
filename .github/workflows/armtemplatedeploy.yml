@@ -6,7 +6,7 @@ on:
       - main
 env:
   resouce_group_name: githubactionsrg
-  location: "eastus"
+  location: East US
   subscriptionid: 59e5a011-4299-4deb-869d-e1f45cfd6395
 jobs:
   armDeploy:
@@ -23,7 +23,7 @@ jobs:
         with:
             scope: subscription
             subscriptionid: ${{ env.subscriptionid }}
-            region: ${{ env.location }}
+            region: "${{ env.location }}"
             template: ./arm-templates/resourcegroup.json
             deploymentName: ${{ env.resouce_group_name }}
 
@@ -47,5 +47,5 @@ jobs:
             template: ./arm-templates/virtualmachine.json
             parameters: 
               adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
-              location=${{ env.location }}"
+              location="${{ env.location }}"
             deploymentMode: incremental    
