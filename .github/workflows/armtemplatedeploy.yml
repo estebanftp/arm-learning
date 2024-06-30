@@ -1,7 +1,7 @@
 name: armTemplateDeplyment
 
 on:
-  push:
+  # push:
     branches: 
       - main
 env:
@@ -60,7 +60,7 @@ jobs:
     name: Deploy to Productin
     runs-on: ubuntu-latest
     env:
-      resouce_group_name: githubactionsrg
+      resouce_group_name: githubactions-prod-rg
       location: East US
     environment:
       name: PRODUCTION
