@@ -1,0 +1,105 @@
+on:
+  # push:
+    branches: 
+      - main
+env:
+  subscriptionid: 59e5a011-4299-4deb-869d-e1f45cfd6395
+jobs:
+  armDeployStaging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    env:
+      resouce_group_name: githubactions-stg-rg
+      location: East US
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v4
+      -  name: Azure Login
+         uses: azure/login@v2
+         with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Deploy Azure group with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: subscription
+            subscriptionid: ${{ env.subscriptionid }}
+            region: "${{ env.location }}"
+            template: ./arm-templates/resourcegroup.json
+            deploymentName: ${{ env.resouce_group_name }}
+
+      - name: Deploy Storage Account with Github
+        uses: Azure/arm-deploy@v2
+        id: storageaccountdeploy
+        with:
+            scope: resourcegroup
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
+            template: ./arm-templates/storageaccount.json
+            parameters: 
+              sku=Standard_LRS
+              storageAccountName=integrityconnectSA01
+            deploymentMode: incremental
+    
+      - name: Deploy Virtual Machine with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: resourcegroup
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
+            template: ./arm-templates/virtualmachine.json
+            parameters: 
+              adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
+              location="${{ env.location }}"
+            deploymentMode: incremental    
+         
+  armDeployProd:
+    name: Deploy to Productin
+    runs-on: ubuntu-latest
+    env:
+      resouce_group_name: githubactions-prod-rg
+      location: East US
+    environment:
+      name: PRODUCTION
+    needs: armDeployStaging
+    steps:
+      - uses: actions/checkout@v4
+      -  name: Azure Login
+         uses: azure/login@v2
+         with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Deploy Azure group with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: subscription
+            subscriptionid: ${{ env.subscriptionid }}
+            region: "${{ env.location }}"
+            template: ./arm-templates/resourcegroup.json
+            deploymentName: ${{ env.resouce_group_name }}
+
+      - name: Deploy Storage Account with Github
+        uses: Azure/arm-deploy@v2
+        id: storageaccountdeploy
+        with:
+            scope: resourcegroup
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
+            template: ./arm-templates/storageaccount.json
+            parameters: 
+              sku=Standard_LRS
+              storageAccountName=integrityconnectSA2 
+            deploymentMode: incremental
+    
+      - name: Deploy Virtual Machine with Github
+        uses: Azure/arm-deploy@v2
+        with:
+            scope: resourcegroup
+            resourceGroupName: ${{ env.resouce_group_name }}
+            subscriptionid: ${{ env.subscriptionid }}
+            template: ./arm-templates/virtualmachine.json
+            parameters: 
+              adminPassword=${{ secrets.UBUNTU_ADMIN_PASSWORD }}
+              location="${{ env.location }}"
+            deploymentMode: incremental     
